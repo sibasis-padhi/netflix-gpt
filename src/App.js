@@ -1,7 +1,7 @@
-import "./App.css";
+import Body from "./components/Body";
 
 function App() {
-  return <div className="App">Project Starter</div>;
+  return <Body />;
 }
 
 export default App;
