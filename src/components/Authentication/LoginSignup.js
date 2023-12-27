@@ -1,11 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Header from "../UI/Navigation/Header";
 import LoginSignupForm from "../UI/Forms/LoginSignupForm";
 
+import { checkAuthFormValidation } from "../../utils/authFormValidation";
+
 const LoginSignup = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const name = useRef(null);
+  const email = useRef(null);
+  const password = useRef(null);
+
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
+  };
+  const handleSubmit = () => {
+    const message = checkAuthFormValidation(
+      name.current.value,
+      email.current.value,
+      password.current.value
+    );
+    setErrorMessage(message);
+    if (message) return;
+    console.log(email);
+    console.log(password);
   };
   return (
     <>
@@ -19,6 +38,11 @@ const LoginSignup = () => {
       <LoginSignupForm
         isSignInForm={isSignInForm}
         toggleForm={toggleSignInForm}
+        name={name}
+        email={email}
+        password={password}
+        handleSubmit={handleSubmit}
+        errorMessage={errorMessage}
       />
     </>
   );
