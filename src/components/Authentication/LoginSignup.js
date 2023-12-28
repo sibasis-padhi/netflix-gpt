@@ -17,7 +17,6 @@ const LoginSignup = () => {
   };
   const handleSubmit = () => {
     const message = checkAuthFormValidation(
-      name.current.value,
       email.current.value,
       password.current.value
     );
