@@ -7,12 +7,16 @@ import { checkAuthFormValidation } from "../../utils/authFormValidation";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../../utils/firebase";
 
-import { BG_URL } from "../../utils/constants";
+import { BG_URL, USER_AVATAR } from "../../utils/constants";
+import { useDispatch } from "react-redux";
+import { addUser } from "../../features/userSlice";
 
 const LoginSignup = () => {
+  const dispatch = useDispatch();
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -39,8 +43,24 @@ const LoginSignup = () => {
       )
         .then((userCredential) => {
           const user = userCredential.user;
-          console.log(user);
-          // })
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: USER_AVATAR,
+          })
+            .then(() => {
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+            })
+            .catch((error) => {
+              setErrorMessage(error.message);
+            });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -56,8 +76,8 @@ const LoginSignup = () => {
       )
         .then((userCredential) => {
           // Signed in
+          // eslint-disable-next-line
           const user = userCredential.user;
-          console.log(user);
         })
         .catch((error) => {
           const errorCode = error.code;
