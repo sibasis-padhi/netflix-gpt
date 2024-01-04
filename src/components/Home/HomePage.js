@@ -1,7 +1,8 @@
-import React from "react";
+import useNowPlayingMovies from "../../hooks/useNowPlayingMovies";
 import Header from "../UI/Navigation/Header";
 
 const HomePage = () => {
+  useNowPlayingMovies();
   return (
     <div>
       <Header />
