@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../../utils/firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { removeUser } from "../../../features/userSlice";
+import { addUser, removeUser } from "../../../features/userSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -15,17 +15,24 @@ const Header = () => {
 
   const handleSignOut = () => {
     signOut(auth)
-      .then(() => {
-        //signout successfully
-      })
+      .then(() => {})
       .catch((error) => {
         console.log(error);
       });
   };
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        const { uid, email, displayName, photoURL } = auth.currentUser;
+        dispatch(
+          addUser({
+            uid: uid,
+            email: email,
+            displayName: displayName,
+            photoURL: photoURL,
+          })
+        );
         navigate("/browse");
       } else {
         //signout
@@ -33,6 +40,8 @@ const Header = () => {
         navigate("/");
       }
     });
+    // Unsiubscribe when component unmounts
+    return () => unsubscribe();
     //eslint-disable-next-line
   }, []);
 
