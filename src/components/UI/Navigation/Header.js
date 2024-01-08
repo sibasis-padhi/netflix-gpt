@@ -49,15 +49,23 @@ const Header = () => {
     <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex flex-col md:flex-row justify-between">
       <img className="w-44 mx-auto md:mx-0" src={LOGO} alt="logo" />
       {user && (
-        <div>
+        <div className="dropdown inline-block relative">
           <img
-            className="hidden md:block w-12 h-12"
+            className="md:block w-12 h-12 cursor-pointer"
             alt="usericon"
             src={user?.photoURL}
           />
-          <button onClick={handleSignOut} className="font-bold text-white ">
-            (Sign Out)
-          </button>
+          <ul class="dropdown-menu absolute hidden text-gray-700 pt-1 w-32 -ml-10">
+            <li className="bg-gray-200 hover:bg-gray-400 py-2 px-1 block whitespace-no-wrap font-bold text-black text-center cursor-pointer">
+              Search
+            </li>
+            <li
+              className="bg-gray-200 hover:bg-gray-400 py-2 px-1 block whitespace-no-wrap font-bold text-black text-center cursor-pointer"
+              onClick={handleSignOut}
+            >
+              Sign Out
+            </li>
+          </ul>
         </div>
       )}
     </div>
