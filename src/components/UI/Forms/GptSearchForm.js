@@ -1,11 +1,8 @@
-import { useRef } from "react";
 import lang from "../../../utils/languageConstants";
 import { useSelector } from "react-redux";
 
-const GptSearchForm = (handleGptSearchClick) => {
-  const searchText = useRef(null);
+const GptSearchForm = ({ searchText, handleGptSearchClick }) => {
   const langKey = useSelector((store) => store.config.lang);
-
   return (
     <form
       className="w-full md:w-1/2 bg-black grid grid-cols-12"
